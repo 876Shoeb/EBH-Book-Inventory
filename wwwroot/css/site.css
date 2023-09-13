@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+
+
+h1 {
+    color: gold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    background-color: magenta
+}
