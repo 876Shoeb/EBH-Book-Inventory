@@ -24,19 +24,28 @@ namespace BookInventory.Areas.Admin.Controllers
         // GET: Admin/Book
         public async Task<IActionResult> Index()
         {
-            var booklist = (from b in await _context.Book.ToListAsync() 
-                            join g in await _context.Genre.ToListAsync() on b.Id equals g.Id
-                           join c in await _context.Condition.ToListAsync() on b.Id equals c.Id
-                           select new
-                           {
-                               b.Id, b.Title, b.Author, b.Publisher, b.CallNumberId, b.PublicationDate, g.DescriptiveName, ConditionName = c.DescriptiveName, b.ISBN, b.IsAvailable
-                           }
-                           ).ToList(); 
+            var booklist = await (from b in  _context.Book
+                            join g in  _context.Genre on b.GenreId equals g.Id
+                            join c in  _context.Condition on b.ConditionId equals c.Id
+                            select new
+                            {
+                                b.Id,
+                                b.ISBN,
+                                b.Title,
+                                b.Author,
+                                b.Publisher,
+                                b.PublicationDate,
+                                g.DescriptiveName,
+                                ConditionName = c.DescriptiveName,
+                                b.CallNumberId,                                                
+                                b.IsAvailable
+                            }
+                           ).ToListAsync();
             ViewBag.Book = booklist;
             return View();
-          /* return _context.Book != null ? 
-                          View(await _context.Book.ToListAsync()) :
-                          Problem("Entity set 'BookInventoryDbContext.Book'  is null.");*/
+            /* return _context.Book != null ?
+                            View(await _context.Book.ToListAsync()) :
+                            Problem("Entity set 'BookInventoryDbContext.Book'  is null.");*/
         }
 
         // GET: Admin/Book/Details/5
